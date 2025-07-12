@@ -2,6 +2,10 @@
 
 A modern HTML5/JavaScript recreation of the classic 1984 platform game "Jet Set Willy" by Matthew Smith.
 
+## 🎮 Play Now
+
+**[Play Jet Set Willy Online](https://jetsetwilly-production.up.railway.app)**
+
 ## Overview
 
 This is a browser-based 2D platformer game featuring the iconic character Willy navigating through various rooms, collecting items while avoiding hazards and enemies. The game captures the essence of the original 8-bit classic with modern web technologies.
@@ -148,4 +152,4 @@ This project is a tribute to the original Jet Set Willy game. Created for educat
 
 ---
 
-**Play the game by opening `index.html` in your browser!**
+**🎮 [Play Online](https://jetsetwilly-production.up.railway.app) | 💻 [Local Setup](#installation) | 🧑‍💻 [Contribute](#contributing)**
