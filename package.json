@@ -1,0 +1,43 @@
+{
+  "name": "jetsetwilly-html5",
+  "version": "1.0.0",
+  "description": "HTML5/JavaScript recreation of the classic Jet Set Willy platform game",
+  "main": "game.js",
+  "scripts": {
+    "start": "npx http-server -p 8000",
+    "dev": "npx live-server --port=8000",
+    "lint": "eslint *.js",
+    "lint:html": "htmlhint *.html",
+    "test": "echo \"Run manual testing by opening index.html in browser\"",
+    "build": "echo \"No build step required for this vanilla JS project\"",
+    "validate": "npm run lint && npm run lint:html"
+  },
+  "keywords": [
+    "game",
+    "html5",
+    "javascript",
+    "platformer",
+    "retro",
+    "jetsetwilly",
+    "canvas"
+  ],
+  "author": "alanops <alansonit@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanops/jetsetwilly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alanops/jetsetwilly/issues"
+  },
+  "homepage": "https://github.com/alanops/jetsetwilly#readme",
+  "devDependencies": {
+    "eslint": "^8.44.0",
+    "htmlhint": "^1.1.4",
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
