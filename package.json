@@ -4,7 +4,7 @@
   "description": "HTML5/JavaScript recreation of the classic Jet Set Willy platform game",
   "main": "game.js",
   "scripts": {
-    "start": "npx http-server -p 8000",
+    "start": "npx serve -s . -p ${PORT:-8000}",
     "dev": "npx live-server --port=8000",
     "lint": "eslint *.js",
     "lint:html": "htmlhint *.html",
@@ -31,6 +31,9 @@
     "url": "https://github.com/alanops/jetsetwilly/issues"
   },
   "homepage": "https://github.com/alanops/jetsetwilly#readme",
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
   "devDependencies": {
     "eslint": "^8.44.0",
     "htmlhint": "^1.1.4",
