@@ -6,7 +6,7 @@ A modern HTML5/JavaScript recreation of the classic 1984 platform game "Jet Set 
 
 ## 🎮 Play Now
 
-**[Play Jet Set Willy Online](https://jetsetwilly-production.up.railway.app)**
+**[Play Jet Set Willy Online](https://alanops.github.io/jetsetwilly/)**
 
 ## Overview
 
@@ -154,4 +154,4 @@ This project is a tribute to the original Jet Set Willy game. Created for educat
 
 ---
 
-**🎮 [Play Online](https://jetsetwilly-production.up.railway.app) | 💻 [Local Setup](#installation) | 🧑‍💻 [Contribute](#contributing)**
+**🎮 [Play Online](https://alanops.github.io/jetsetwilly/) | 💻 [Local Setup](#installation) | 🧑‍💻 [Contribute](#contributing)**

@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/alanops/jetsetwilly/issues"
   },
-  "homepage": "https://github.com/alanops/jetsetwilly#readme",
+  "homepage": "https://alanops.github.io/jetsetwilly/", 
   "dependencies": {
     "serve": "^14.2.1"
   },
