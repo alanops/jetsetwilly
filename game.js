@@ -374,18 +374,18 @@ class Willy {
      * @param {Room} room - The current room for collision detection
      */
     update(room) {
-        // Apply gravity to vertical velocity
-        this.vy += GRAVITY;
-        
-        // Update position based on velocity
+        // Move horizontally first, then resolve side collisions
         this.x += this.vx;
+        this.checkHorizontalCollisions(room);
+        
+        // Apply gravity and resolve vertical movement separately
+        this.vy += GRAVITY;
         this.y += this.vy;
+        this.grounded = false;
+        this.checkVerticalCollisions(room);
         
         // Apply friction to horizontal movement
         this.vx *= 0.8;
-        
-        // Check and resolve collisions with room tiles
-        this.checkRoomCollisions(room);
         
         // Kill player if they fall off the bottom of the screen
         if (this.y > SCREEN_HEIGHT) {
@@ -394,53 +394,59 @@ class Willy {
     }
     
     /**
-     * Check and resolve collisions between player and room tiles
-     * Uses tile-based collision detection for efficient processing
+     * Check and resolve horizontal collisions between player and room tiles.
+     * Horizontal and vertical movement are handled separately so floor contact
+     * does not incorrectly cancel left/right motion.
      * @param {Room} room - The current room to check collisions against
      */
-    checkRoomCollisions(room) {
-        this.grounded = false;  // Reset grounded state
-        
-        // Calculate which tiles the player overlaps
+    checkHorizontalCollisions(room) {
         const tileX = Math.floor(this.x / TILE_SIZE);
         const tileY = Math.floor(this.y / TILE_SIZE);
         const tileX2 = Math.floor((this.x + this.width - 1) / TILE_SIZE);
         const tileY2 = Math.floor((this.y + this.height - 1) / TILE_SIZE);
         
-        // Check all tiles that the player overlaps
         for (let y = tileY; y <= tileY2; y++) {
             for (let x = tileX; x <= tileX2; x++) {
-                if (room.getTile(x, y) === 1) {  // Solid tile
-                    // Calculate tile boundaries
-                    const tileLeft = x * TILE_SIZE;
-                    const tileTop = y * TILE_SIZE;
-                    const tileRight = tileLeft + TILE_SIZE;
-                    const tileBottom = tileTop + TILE_SIZE;
-                    
-                    // Vertical collision - landing on top of tile
-                    if (this.vy > 0 && this.y < tileTop && this.y + this.height > tileTop) {
-                        this.y = tileTop - this.height;  // Position on top of tile
-                        this.vy = 0;                     // Stop falling
-                        this.grounded = true;            // Now on solid ground
-                    }
-                    
-                    // Vertical collision - hitting tile from below
-                    if (this.vy < 0 && this.y + this.height > tileBottom && this.y < tileBottom) {
-                        this.y = tileBottom;  // Position below tile
-                        this.vy = 0;          // Stop upward movement
-                    }
-                    
-                    // Horizontal collision - hitting tile from left
-                    if (this.vx > 0 && this.x < tileLeft && this.x + this.width > tileLeft) {
-                        this.x = tileLeft - this.width;  // Position to left of tile
-                        this.vx = 0;                     // Stop rightward movement
-                    }
-                    
-                    // Horizontal collision - hitting tile from right
-                    if (this.vx < 0 && this.x + this.width > tileRight && this.x < tileRight) {
-                        this.x = tileRight;  // Position to right of tile
-                        this.vx = 0;         // Stop leftward movement
-                    }
+                if (room.getTile(x, y) !== 1) continue;
+                
+                const tileLeft = x * TILE_SIZE;
+                const tileRight = tileLeft + TILE_SIZE;
+                
+                if (this.vx > 0 && this.x < tileLeft && this.x + this.width > tileLeft) {
+                    this.x = tileLeft - this.width;
+                    this.vx = 0;
+                } else if (this.vx < 0 && this.x < tileRight && this.x + this.width > tileRight) {
+                    this.x = tileRight;
+                    this.vx = 0;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Check and resolve vertical collisions between player and room tiles.
+     * @param {Room} room - The current room to check collisions against
+     */
+    checkVerticalCollisions(room) {
+        const tileX = Math.floor(this.x / TILE_SIZE);
+        const tileY = Math.floor(this.y / TILE_SIZE);
+        const tileX2 = Math.floor((this.x + this.width - 1) / TILE_SIZE);
+        const tileY2 = Math.floor((this.y + this.height - 1) / TILE_SIZE);
+        
+        for (let y = tileY; y <= tileY2; y++) {
+            for (let x = tileX; x <= tileX2; x++) {
+                if (room.getTile(x, y) !== 1) continue;
+                
+                const tileTop = y * TILE_SIZE;
+                const tileBottom = tileTop + TILE_SIZE;
+                
+                if (this.vy > 0 && this.y < tileTop && this.y + this.height > tileTop) {
+                    this.y = tileTop - this.height;
+                    this.vy = 0;
+                    this.grounded = true;
+                } else if (this.vy < 0 && this.y < tileBottom && this.y + this.height > tileBottom) {
+                    this.y = tileBottom;
+                    this.vy = 0;
                 }
             }
         }
