@@ -2,6 +2,8 @@
 
 A modern HTML5/JavaScript recreation of the classic 1984 platform game "Jet Set Willy" by Matthew Smith.
 
+> Status: Active
+
 ## 🎮 Play Now
 
 **[Play Jet Set Willy Online](https://jetsetwilly-production.up.railway.app)**
