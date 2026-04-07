@@ -65,14 +65,31 @@ class Game {
      * Tracks key states for smooth movement and prevents default browser actions
      */
     setupInput() {
-        window.addEventListener('keydown', (e) => {
-            this.keys[e.key] = true;
-            e.preventDefault();  // Prevent scrolling, etc.
-        });
+        const controlKeys = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'KeyA', 'KeyD', 'KeyW']);
         
-        window.addEventListener('keyup', (e) => {
-            this.keys[e.key] = false;
-            e.preventDefault();
+        const setKeyState = (e, isPressed) => {
+            this.keys[e.key] = isPressed;
+            this.keys[e.code] = isPressed;
+            
+            // Also normalize common movement aliases for broader browser/layout support
+            if (e.key === 'a' || e.key === 'A' || e.code === 'KeyA') this.keys.left = isPressed;
+            if (e.key === 'd' || e.key === 'D' || e.code === 'KeyD') this.keys.right = isPressed;
+            if (e.key === 'w' || e.key === 'W' || e.code === 'KeyW') this.keys.jump = isPressed;
+            if (e.key === 'ArrowLeft' || e.code === 'ArrowLeft') this.keys.left = isPressed;
+            if (e.key === 'ArrowRight' || e.code === 'ArrowRight') this.keys.right = isPressed;
+            if (e.key === 'ArrowUp' || e.code === 'ArrowUp' || e.key === ' ') this.keys.jump = isPressed;
+            
+            if (controlKeys.has(e.code) || ['ArrowLeft', 'ArrowRight', 'ArrowUp', ' '].includes(e.key)) {
+                e.preventDefault();  // Prevent scrolling and browser shortcuts for game controls
+            }
+        };
+        
+        window.addEventListener('keydown', (e) => setKeyState(e, true));
+        window.addEventListener('keyup', (e) => setKeyState(e, false));
+        
+        // Clear stuck keys when tab focus changes
+        window.addEventListener('blur', () => {
+            this.keys = {};
         });
     }
     
@@ -155,13 +172,13 @@ class Game {
         if (this.state !== GameState.PLAYING) return;
         
         // Process player input
-        if (this.keys['ArrowLeft']) {
+        if (this.keys.left || this.keys['ArrowLeft'] || this.keys['KeyA'] || this.keys['a'] || this.keys['A']) {
             this.willy.moveLeft();
         }
-        if (this.keys['ArrowRight']) {
+        if (this.keys.right || this.keys['ArrowRight'] || this.keys['KeyD'] || this.keys['d'] || this.keys['D']) {
             this.willy.moveRight();
         }
-        if (this.keys[' '] || this.keys['ArrowUp']) {
+        if (this.keys.jump || this.keys[' '] || this.keys['Space'] || this.keys['ArrowUp'] || this.keys['KeyW'] || this.keys['w'] || this.keys['W']) {
             this.willy.jump();
         }
         
